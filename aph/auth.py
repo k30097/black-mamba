@@ -17,7 +17,7 @@ def login():
         
         if user:
             if check_password_hash(user.password, password):
-                flash('logged in', category='error')
+                flash('logged in', category='success')
                 print('logged in')
                 login_user(user, remember=True)
                 return redirect(url_for('dashboard.account'))
@@ -25,8 +25,8 @@ def login():
                 print('password in incorrect')
                 flash('password in incorrect', category='error')
         else:
-            print('email does not exist')
-            flash('email does not exist', category='error')
+            print('email is not in the database')
+            flash('email is not in the database', category='error')
     return render_template('login.html')
 
 
@@ -54,7 +54,7 @@ def signup():
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
-            flash('new account created')
+            flash('new account created, you are now logged in', category='success')
             return redirect(url_for('dashboard.account'))
     return render_template('signup.html')
 
@@ -62,4 +62,5 @@ def signup():
 @login_required
 def logout():
     logout_user()
+    flash('you have been logged out', category='success')
     return redirect(url_for('dashboard.home'))
