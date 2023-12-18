@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template
+from flask import Flask, Blueprint, render_template, session, redirect, url_for, flash, request
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
@@ -14,10 +14,10 @@ def dashboard():
 def reports():
     return render_template('report.html')
 
-@dashboard_bp.route('/account/')
+@dashboard_bp.route('/account/', methods=['POST' , 'GET'])
 def account():
     return render_template('account.html')
-
+    
 @dashboard_bp.route('/instructions/')
 def instructions():
     return render_template('instructions.html')

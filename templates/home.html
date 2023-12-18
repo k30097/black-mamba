@@ -26,7 +26,11 @@ content %}
   reckless with it, so keep that in mind.
 </p>
 <div class="button-container">
-  <a href="{{ url_for('auth.login')}}" class="auth-button">login</a>
-  <a href="{{ url_for('auth.signup')}}" class="auth-button">signup</a>
+  <a href="{{ url_for('auth.login')}}" class="auth-button" method="GET"
+    >login</a
+  >
+  <a href="{{ url_for('auth.signup')}}" class="auth-button" method="GET"
+    >signup</a
+  >
 </div>
 {% endblock %}
