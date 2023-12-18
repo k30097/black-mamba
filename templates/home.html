@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %}Home Page{% endblock %} {% block
+content %}
+<h2 style="margin-top: 60px">- Welcome to the Security Report Generator -</h2>
+
+<p style="margin-top: 10px">
+  This is a RESTful API that can be used as a pen testing tool and security
+  report generator. It was developed by Khadim Rassoul Kante between November
+  2023 and INSERT-MONTH 2024 as final project for his Cyber Security and Network
+  degree from Glasgow Caledonian University. The supervisor was professor David
+  Hendry.
+</p>
+<p style="margin-top: 10px">
+  The app can perform different type of scans or attacks on the selected target.
+  based on the results, the app then passes the information through to the
+  OpenAI language model to generate a security report on the vulnerabilities
+  that were found.
+</p>
+<p style="margin-top: 10px">
+  As of December 2023 the possible scans/attacks are: an Nmap scan (both Udp and
+  Tcp), a Web scraping service that identifies possible targets for cross-site
+  scripting [ADD MORE] .
+</p>
+<p style="margin-top: 10px">
+  IMPORTANT --- This app was NOT created to be used for criminal activities or
+  to perform illegal scans. I am NOT taking the blame if you decide to be
+  reckless with it, so keep that in mind.
+</p>
+<div class="button-container">
+  <a href="{{ url_for('auth.login')}}" class="auth-button">login</a>
+  <a href="{{ url_for('auth.signup')}}" class="auth-button">signup</a>
+</div>
+{% endblock %}

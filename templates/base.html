@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}default title{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='small icon.png') }}">
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Special+Elite&display=swap");
+
+      body {
+        font-family: "Special Elite", cursive;
+        background-color: #333;
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: #fff;
+        text-align: center;
+        padding: 50px;
+        margin: 0;
+      }
+
+      h2 {
+        font-size: 36px;
+        display: inline-block;
+        padding: 10px;
+      }
+
+      nav {
+        display: flex;
+        align-items: flex-start;
+        background-color: #1a1a1a;
+        padding: 10px;
+        border-radius: 10px;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        width: auto;
+      }
+
+      nav a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        margin: 5px 0;
+        display: block;
+        border-radius: 5px;
+        padding: 8px;
+      }
+
+      .footer-text {
+        font-size: 15px;
+        opacity: 0.5;
+        margin: 0;
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+      }
+
+      .button-container {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .auth-button {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        border-radius: 5px;
+        padding: 8px;
+        background-color: #1a1a1a;
+        display: block;
+        text-align: center;
+        width: 120px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav>
+      <a href="{{ url_for('dashboard.home') }}">Home</a>
+      <a href="{{ url_for('dashboard.instructions') }}">Instructions</a>
+      <a href="{{ url_for('dashboard.account') }}">Account</a>
+      <a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a>
+    </nav>
+
+    {% block content %}
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for msg in messages %}
+            <p>{{msg}}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    {% endblock %}
+
+    <div class="footer-text">
+      El Barto Was HeRe - Ras 0.2 -- Written in Python --
+    </div>
+    <span class="material-icons-outlined">
+    </span>
+    </span>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
+content %}
+<h2>- Dashboard -</h2>
+
+<div class="dashboard-container">
+  <div class="dashboard-panel">
+    <h3>Nmap</h3>
+    <p>To execute an nmap scan click on this panel.</p>
+  </div>
+
+  <div class="dashboard-panel">
+    <h3>FFuF</h3>
+    <p>To execute a ffuf scan click on this panel</p>
+  </div>
+
+  <div class="dashboard-panel">
+    <h3>INSERT ATTACK</h3>
+    <p>
+      Your security reports will be available after your first scan. Click on
+      this panel to see them
+    </p>
+  </div>
+
+  <div class="dashboard-panel">
+    <h3>Find vulnerabilities (Web scraping)</h3>
+    <p>
+      A script will scan through the url of your choice and identify weak points
+      that could be exploited for attacks like XSS
+    </p>
+  </div>
+</div>
+{% endblock %}
