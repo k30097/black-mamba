@@ -2,35 +2,58 @@
 content %}
 <h2>- Dashboard -</h2>
 
+<style>
+  .dashboard-panel {
+    background-color: #1a1a1a;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    padding: 10px;
+    margin: 10px;
+    text-align: left;
+    display: inline-block;
+  }
+
+  .dashboard-button {
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+</style>
+
 <div class="dashboard-container">
   <div class="dashboard-panel">
     <h3>Nmap</h3>
     <p>To execute an nmap scan click on this panel.</p>
+    <a href="{{ url_for('attacks.nmap') }}" class="dashboard-button"
+      >Go to Nmap</a
+    >
   </div>
 
   <div class="dashboard-panel">
     <h3>FFuF</h3>
-    <p>To execute a ffuf scan click on this panel</p>
-  </div>
-
-  <div class="dashboard-panel">
-    <h3>INSERT ATTACK</h3>
-    <p>
-      Your security reports will be available after your first scan. Click on
-      this panel to see them
-    </p>
+    <p>To execute an ffuf scan click on this panel</p>
+    <a href="{{ url_for('attacks.ffuf') }}" class="dashboard-button"
+      >Go to FFuF</a
+    >
   </div>
 
   <div class="dashboard-panel">
     <h3>Find vulnerabilities (Web scraping)</h3>
     <p>
-      A script will scan through the url of your choice and identify weak points
-      that could be exploited for attacks like XSS
+      A script will scan through the URL of your choice and identify weak points
+      that could be exploited for attacks like XSS.
     </p>
+    <a href="{{ url_for('attacks.scraping') }}" class="dashboard-button"
+      >Go to Scraping</a
+    >
   </div>
 </div>
+
 <div class="button-container">
-  <a href="{{ url_for('auth.logout')}}" class="auth-button" method="GET"
+  <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
     >logout</a
   >
 </div>

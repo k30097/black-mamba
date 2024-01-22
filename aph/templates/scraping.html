@@ -1,2 +1,7 @@
 {% extends "base.html" %} {% block title %}XSS{% endblock %} {% block content %}
+<div class="button-container">
+  <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
+    >logout</a
+  >
+</div>
 {% endblock %}

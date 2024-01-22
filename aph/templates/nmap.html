@@ -1,2 +1,18 @@
 {% extends "base.html" %} {% block title %}Nmap tool{% endblock %} {% block
-content %} {% endblock %}
+content %}
+<div class="button-container">
+  <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
+    >logout</a
+  >
+</div>
+
+<div class="nmap-form-container">
+  <h3>Enter IP Address for Nmap Scan</h3>
+  <form action="{{ url_for('attacks.nmap') }}" method="POST">
+    <label for="ip_address">ip address:</label>
+    <input type="text" id="ip_address" name="ip_address" required />
+    <button type="submit">start scan</button>
+  </form>
+</div>
+
+{% endblock %}

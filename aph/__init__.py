@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import logging
 from os import path
 import os
 
@@ -27,8 +28,6 @@ def create_app():
     
     from .models import User
     
-    create_database(app, db_path)
-    
     # login manager uses sessions to store user info and 
     # manage login. default session length is 30 days.
     login_manager = LoginManager()
@@ -42,6 +41,9 @@ def create_app():
             return User.query.get(int(id))
         return None
     
+    logging.basicConfig(level=logging.INFO)
+    
+    create_database(app, db_path)
     
     return app
 
@@ -51,4 +53,3 @@ def create_database(app, db_path):
         with app.app_context():
             db.create_all()
             print('created database')
-        
