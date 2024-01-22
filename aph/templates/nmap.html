@@ -8,7 +8,7 @@ content %}
 
 <div class="nmap-form-container">
   <h3>Enter IP Address for Nmap Scan</h3>
-  <form action="{{ url_for('attacks.nmap') }}" method="POST">
+  <form action="{{ url_for('attacks.nmap_scan') }}" method="POST">
     <label for="ip_address">ip address:</label>
     <input type="text" id="ip_address" name="ip_address" required />
     <button type="submit">start scan</button>

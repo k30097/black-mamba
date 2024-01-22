@@ -3,10 +3,9 @@ from flask_login import login_required, current_user
 import ipaddress
 import nmap
 
-attacks_bp = Blueprint('attacks', __name__, )
+attacks_bp = Blueprint('attacks', __name__)
 
-nmap_path = r"C:\Program Files (x86)\Nmap\nmap.exe"
-scanner = nmap.PortScanner(nmap_search_path=nmap_path)
+scanner = nmap.PortScanner()
 port_range = 65535
 
 @attacks_bp.route('/scraping/')
