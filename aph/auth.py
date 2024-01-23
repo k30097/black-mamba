@@ -44,7 +44,7 @@ def signup():
             flash('this email has already been used', category='error')
             print('this email has already been used')
         elif password != password2:
-            flash('password do not match', category='error')
+            flash('passwords do not match', category='error')
         elif len(email) < 4:
             flash('insert a valid email', category='error')
         elif len(password) < 5:

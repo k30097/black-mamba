@@ -4,6 +4,7 @@ from flask_login import LoginManager
 import logging
 from os import path
 import os
+import json
 
 db = SQLAlchemy()
 
@@ -24,9 +25,9 @@ def create_app():
     # blueprints are registered
     app.register_blueprint(auth_bp, url_prefix='/auth/')
     app.register_blueprint(dashboard_bp, url_prefix='/')
-    app.register_blueprint(attacks_bp, url_prefix='/features/')
+    app.register_blueprint(attacks_bp, url_prefix='/dashboard/')
     
-    from .models import User
+    from .models import User, Past_scans_scraping, Past_scans_ffuf, Past_scans_nmap
     
     # login manager uses sessions to store user info and 
     # manage login. default session length is 30 days.
@@ -42,6 +43,11 @@ def create_app():
         return None
     
     logging.basicConfig(level=logging.INFO)
+    
+    def from_json(value):
+        return json.loads(value)
+    
+    app.jinja_env.filters['from_json'] = from_json
     
     create_database(app, db_path)
     

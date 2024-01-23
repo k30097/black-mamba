@@ -1,19 +1,95 @@
 {% extends "base.html" %} {% block title %}Account{% endblock %} {% block
 content %}
-<h2 style="margin-top: 60px">- Account -</h2>
+<style>
+  /* Custom styles for the account page */
+  #nmap_scans,
+  #ffuf_scans,
+  #scraping_scans {
+    list-style-type: none;
+    padding: 0;
+  }
 
-<p style="margin-top: 10px">
-  This is your account page. Here you can see your personal information. Your
-  password will be always safely encrypted on a database created locally on your
-  machine.
-</p>
-<p>
-  --- IF THIS PAGE IS EMPTY IS BECAUSE YOU EITHER DON'T HAVE AN ACCOUNT OR
-  SIMPLY AREN'T LOGGED IN ---
-</p>
-<div class="button-container">
-  <a href="{{ url_for('auth.logout')}}" class="auth-button" method="GET"
-    >logout</a
-  >
+  .list-group-item {
+    margin-bottom: 45px; /* Increase the margin-bottom to increase space between lines */
+    text-align: left; /* Align text to the left */
+  }
+
+  .list-group-item li {
+    margin-bottom: 10px;
+  }
+
+  .list-group-item strong {
+    display: inline-block;
+    margin-bottom: 8px;
+    margin-right: 10px;
+  }
+
+  h3 {
+    text-align: left;
+  }
+</style>
+
+<div class="container-fluid">
+  <h2 style="margin-top: 60px">- Account -</h2>
+  <p style="margin-top: 10px">
+    This is your account page. Here you can see your personal information. Your
+    password will always be safely encrypted in a database created locally on
+    your machine.
+  </p>
+
+  <h3>Nmap Scans:</h3>
+  <ul class="list-group list-group-flush" id="nmap_scans">
+    {% for scan in nmap_scans %}
+    <li class="list-group-item">
+      <strong>IP Address:</strong> {{ scan.target }}<br />
+      {% set nmap_results = scan.results | tojson | from_json %}
+      <strong>Command Used:</strong> {{ nmap_results.nmap.command_line }}<br />
+      <strong>Scan Results:</strong>
+      {% if nmap_results.scan[scan.target] is defined %}
+      <ul>
+        <li>
+          <strong>IP Address:</strong> {{
+          nmap_results.scan[scan.target].addresses.ipv4 }}
+        </li>
+        <li>
+          <strong>Command Used:</strong> {{ nmap_results.nmap.command_line }}
+        </li>
+        <li>
+          <strong>Hostnames:</strong> {% for hostname in
+          nmap_results.scan[scan.target].hostnames %}{{ hostname.name }}, {%
+          endfor %}
+        </li>
+        <li>
+          <strong>Open Ports:</strong> {% for port, data in
+          nmap_results.scan[scan.target].tcp.items() if data.state == 'open'
+          %}{{ port }}, {% endfor %}
+        </li>
+      </ul>
+      {% else %}
+      <p>No scan results available.</p>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+
+  <h3>FFUF Scans:</h3>
+  <ul class="list-group list-group-flush" id="ffuf_scans">
+    {% for scan in ffuf_scans %}
+    <li class="list-group-item">{{ scan.results }}</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Scraping Scans:</h3>
+  <ul class="list-group list-group-flush" id="scraping_scans">
+    {% for scan in scraping_scans %}
+    <li class="list-group-item">{{ scan.results }}</li>
+    {% endfor %}
+  </ul>
+
+  <div class="button-container">
+    <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
+      >logout</a
+    >
+  </div>
 </div>
 {% endblock %}
