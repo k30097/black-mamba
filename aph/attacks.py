@@ -9,6 +9,9 @@ import json
 
 attacks_bp = Blueprint('attacks', __name__)
 
+# initialized nmap scanner. The max port range is currently set manually
+# but eventually it will be decided by the user. Currently set at 22 to get 
+# faster scans for testing purposes.
 scanner = nmap.PortScanner()
 port_range = 22
 
@@ -34,6 +37,7 @@ def nmap_scan():
         if target_ip:
             try:
                 ip_address_obj = ipaddress.ip_address(target_ip)
+                # ^ this validates the input and raises an exception
                 result = scanner.scan(target_ip, f'1-{port_range}')
                 # Store the JSON results as a dictionary in the session
                 nmap_scan_results = result
@@ -42,6 +46,8 @@ def nmap_scan():
                 new_scan = Past_scans_nmap(target=target_ip, results=results_dict, user=current_user)
                 db.session.add(new_scan)
                 db.session.commit()
+                # nmap scan is performed on the target ip, within the selected port range.
+                # the results come in JSON format and saved in the database as a dictionary
                 flash('Scan completed and stored successfully', category='success')
 
                 logging.info(f'New Nmap scan added for user id {current_user.id}')

@@ -2,6 +2,7 @@ from flask import Flask, Blueprint, render_template, session, redirect, url_for,
 from flask_login import login_required, current_user
 from .models import Past_scans_ffuf, Past_scans_nmap, Past_scans_scraping, User
 
+# this blueprint page includes all the entries on the navbar at the top of the page
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
@@ -17,6 +18,9 @@ def dashboard():
 @dashboard_bp.route('/account/', methods=['POST' , 'GET'])
 @login_required
 def account():
+    
+    # on this page the user can see the results of the past scans completed while logged on this account
+    # as of feb 6 2024 nmap scans are the only type included, but others will follow.
     
     nmap_scans =  Past_scans_nmap.query.filter_by(user_id=current_user.id).all()
     ffuf_scans = Past_scans_ffuf.query.filter_by(user_id=current_user.id).all()

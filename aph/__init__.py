@@ -9,6 +9,9 @@ import json
 db = SQLAlchemy()
 
 def create_app():
+    
+    # flask app is initialized with a hard-coded secret key.
+    # the db location changes dynamically to the folder where the app is located.
     app = Flask(__name__)
     app.secret_key = 'black_mamba'
     current_folder = os.path.dirname(os.path.abspath(__file__))
