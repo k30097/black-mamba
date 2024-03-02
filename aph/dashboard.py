@@ -1,6 +1,6 @@
-from flask import Flask, Blueprint, render_template, session, redirect, url_for, flash, request
+from flask import Flask, Blueprint, render_template
 from flask_login import login_required, current_user
-from .models import Past_scans_dirbuster, Past_scans_nmap, Past_scans_scraping, User
+from .models import Past_scans_dirbuster, Past_scans_nmap, Past_scans_scraping
 
 # this blueprint page includes all the entries on the navbar at the top of the page
 dashboard_bp = Blueprint('dashboard', __name__)

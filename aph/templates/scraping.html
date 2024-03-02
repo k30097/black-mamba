@@ -1,17 +1,64 @@
-{% extends "base.html" %} {% block title %}Web Scraping Tool{% endblock %} {%
-block content %}
+{% extends "base.html" %} {% block title %}scraping{% endblock %} {% block
+content %}
+<style>
+  form {
+    font-size: 2.3em;
+  }
+  form input,
+  form button,
+  form label {
+    font-size: 1em;
+    padding: 10px 20px;
+    width: auto;
+    height: auto;
+  }
+  .column {
+    flex: 0 1 auto;
+    width: 30%;
+    padding: 20px;
+    text-align: left;
+    line-height: 1.5;
+  }
+  .column-container {
+    display: flex;
+    justify-content: space-around;
+  }
+  .column:last-child {
+    border-right: none;
+  }
+  input#target_url {
+    width: 100%;
+  }
+  button[type="submit"] {
+    margin-top: 20px;
+  }
+  form div:first-child {
+    margin-bottom: 20px;
+  }
+  label[for="max_port"] {
+    margin-top: 20px;
+  }
+</style>
 <div class="button-container">
   <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
     >logout</a
   >
 </div>
-
+<h2>enter URL for scraping</h2>
 <div class="scrape-form-container">
-  <h3>Enter URL for Scraping</h3>
-  <form action="{{ url_for('attacks.scraping') }}" method="POST">
-    <label for="target_url">URL:</label>
-    <input type="text" id="target_url" name="target_url" required />
-    <button type="submit">start scraping</button>
-  </form>
+  <div class="column-container" style="display: flex">
+    <form action="{{ url_for('attacks.scraping') }}" method="POST">
+      <label for="target_url">URL:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="target_url"
+        name="target_url"
+        placeholder="format https://website.com"
+        required
+      />
+      <button type="submit">start scraping</button>
+    </form>
+  </div>
 </div>
 {% endblock %}

@@ -1,7 +1,6 @@
-{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
+{% extends "base.html" %} {% block title %}dashboard{% endblock %} {% block
 content %}
 <h2>- Dashboard -</h2>
-
 <style>
   .dashboard-panel {
     background-color: #1a1a1a;
@@ -12,7 +11,6 @@ content %}
     text-align: left;
     display: inline-block;
   }
-
   .dashboard-button {
     text-decoration: none;
     color: #fff;
@@ -21,37 +19,52 @@ content %}
     border-radius: 3px;
     display: inline-block;
   }
+  .column {
+    flex: 0 1 auto;
+    width: 30%;
+    padding: 20px;
+    text-align: left;
+    line-height: 1.5;
+  }
+  .column-container {
+    display: flex;
+    justify-content: space-around;
+  }
+  .column:last-child {
+    border-right: none;
+  }
 </style>
-
 <div class="dashboard-container">
-  <div class="dashboard-panel">
-    <h3>Nmap</h3>
-    <p>To execute an nmap scan click on this panel.</p>
-    <a href="{{ url_for('attacks.nmap_scan') }}" class="dashboard-button"
-      >Go to Nmap</a
-    >
-  </div>
-
-  <div class="dashboard-panel">
-    <h3>Dirbuster</h3>
-    <p>To execute a dirbuster scan click on this panel</p>
-    <a href="{{ url_for('attacks.dirbuster') }}" class="dashboard-button"
-      >Go to Dirbuster</a
-    >
-  </div>
-
-  <div class="dashboard-panel">
-    <h3>Find vulnerabilities (Web scraping)</h3>
-    <p>
-      A script will scan through the URL of your choice and identify weak points
-      that could be exploited for attacks like XSS.
-    </p>
-    <a href="{{ url_for('attacks.scraping') }}" class="dashboard-button"
-      >Go to Scraping</a
-    >
+  <div class="column-container" style="display: flex">
+    <div class="column" style="flex: 1">
+      <div class="dashboard-panel">
+        <h3>Nmap</h3>
+        <p>To execute an nmap scan click on this panel.</p>
+        <a href="{{ url_for('attacks.nmap_scan') }}" class="dashboard-button"
+          >Go to Nmap</a
+        >
+      </div>
+    </div>
+    <div class="column" style="flex: 1">
+      <div class="dashboard-panel">
+        <h3>Dirbuster</h3>
+        <p>To execute a dirbuster scan click on this panel.</p>
+        <a href="{{ url_for('attacks.dirbuster') }}" class="dashboard-button"
+          >Go to Dirbuster</a
+        >
+      </div>
+    </div>
+    <div class="column" style="flex: 1">
+      <div class="dashboard-panel">
+        <h3>Scraping</h3>
+        <p>To execute a web scraping script click on this panel.</p>
+        <a href="{{ url_for('attacks.scraping') }}" class="dashboard-button"
+          >Go to Scraping</a
+        >
+      </div>
+    </div>
   </div>
 </div>
-
 <div class="button-container">
   <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
     >logout</a

@@ -1,7 +1,6 @@
-from flask import Flask, Blueprint, render_template, request, session, redirect, url_for, flash
+from flask import Flask, Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from urllib.parse import urlparse
 from .models import User
 from . import db
 
@@ -9,6 +8,9 @@ auth_bp = Blueprint('auth', __name__, static_folder='static', template_folder='t
 
 @auth_bp.route('/login/', methods=['POST', 'GET'])
 def login():
+    if current_user.is_authenticated:
+        flash('to register a new account or log into a different one you need to logout first')
+        return redirect(url_for('dashboard.account'))
     # when the content of the forms on the login page is submitted
     # the presence of a user with the same email is checked, then
     # the same is done with the password hash. If all the checks are 
@@ -34,6 +36,9 @@ def login():
 
 @auth_bp.route('/signup/', methods=['POST', 'GET'])
 def signup():
+    if current_user.is_authenticated:
+        flash('to register a new account or log into a different one you need to logout first')
+        return redirect(url_for('dashboard.account'))
     if request.method == 'POST':
         # check if the user is already signed up with this email.
         # if the email is not found in the database then a new user

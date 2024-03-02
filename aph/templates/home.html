@@ -1,31 +1,36 @@
-{% extends "base.html" %} {% block title %}Home Page{% endblock %} {% block
+{% extends "base.html" %} {% block title %}home page{% endblock %} {% block
 content %}
+<style>
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .column {
+    border-right: 1px solid #ccc;
+    padding: 20px;
+    text-align: left;
+    line-height: 1.3;
+  }
+  .column:last-child {
+    border-right: none;
+  }
+  .column p {
+    font-size: 18px;
+  }
+</style>
 <h2 style="margin-top: 60px">- Welcome to the Apache Persuasion Hold API -</h2>
-
-<p style="margin-top: 10px">
-  This is a RESTful API that can be used as a pen testing tool and security
-  report generator. It was developed by Khadim Kante between November 2023 and
-  INSERT-MONTH 2024 as the final project for his Cyber Security and Network
-  degree from Glasgow Caledonian University. The supervisor was professor David
-  Hendry.
-</p>
-<p style="margin-top: 10px">
-  The app can perform different types of scans or attacks on the selected
-  target. Based on the results, the app then passes the information through to
-  the OpenAI language model to generate a security report on the vulnerabilities
-  that were found.
-</p>
-<p style="margin-top: 10px">
-  As of December 2023, the possible scans/attacks are: an Nmap scan (both Udp
-  and Tcp), a Web scraping service that identifies possible targets for
-  cross-site scripting [ADD MORE] .
-</p>
-<p style="margin-top: 10px">
-  IMPORTANT --- This app was NOT created to be used for criminal activities or
-  to perform illegal scans. I am NOT taking the blame if you decide to be
-  reckless with it, so keep that in mind.
-</p>
-
+<div class="container-fluid flex-container">
+  <div class="column" style="flex: 1">
+    <p style="margin-top: 10px">
+      This is a RESTful API that can be used as a pen testing tool and security
+      report generator.<br />It was developed by Khadim Kante between November
+      2023 and March 2024 as the final project for his Cyber Security and
+      Network degree from Glasgow Caledonian University.<br />The supervisor was
+      professor David Hendry.<br />
+    </p>
+  </div>
+</div>
 {% if current_user.is_authenticated %}
 <div class="button-container">
   <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"

@@ -1,27 +1,66 @@
-{% extends "base.html" %} {% block title %}Dirbuster{% endblock %} {% block
+{% extends "base.html" %} {% block title %}dirbuster{% endblock %} {% block
 content %}
-
+<style>
+  form {
+    font-size: 2.3em;
+  }
+  form input,
+  form button,
+  form label {
+    font-size: 1em;
+    padding: 10px 20px;
+    width: auto;
+    height: auto;
+  }
+  .column {
+    flex: 0 1 auto;
+    width: 30%;
+    padding: 20px;
+    text-align: left;
+    line-height: 1.5;
+  }
+  .column-container {
+    display: flex;
+    justify-content: space-around;
+  }
+  .column:last-child {
+    border-right: none;
+  }
+  input#target_url {
+    width: 100%;
+  }
+  button[type="submit"] {
+    margin-top: 20px;
+  }
+  form div:first-child {
+    margin-bottom: 20px;
+  }
+  label[for="max_port"] {
+    margin-top: 20px;
+  }
+</style>
 <div class="container">
   <div class="button-container">
     <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
       >logout</a
     >
   </div>
-
-  <h3>Enter URL for dirbuster</h3>
-  <form action="{{ url_for('attacks.dirbuster') }}" method="POST">
-    <div class="form-group">
-      <label for="target_url">URL:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="target_url"
-        name="target_url"
-        placeholder="Enter URL"
-        required
-      />
-    </div>
-    <button type="submit" class="btn btn-primary">Start Scan</button>
-  </form>
+  <h2>enter URL for dirbuster</h2>
+  <div class="column-container" style="display: flex">
+    <form action="{{ url_for('attacks.dirbuster') }}" method="POST">
+      <div class="form-group">
+        <label for="target_url">URL:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="target_url"
+          name="target_url"
+          placeholder="format https://website.com"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">start dirbuster</button>
+    </form>
+  </div>
 </div>
 {% endblock %}

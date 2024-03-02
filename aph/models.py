@@ -4,9 +4,10 @@ from sqlalchemy.sql import func
 from sqlalchemy import JSON
 
 # each class represents a different database model, aka different type of data
-# stored. The User database model is the main one, used to link all the others together
+# stored. the User database model is the main one, used to link all the others together
 # this means that each database entry is related to a different user, which is the only one
 # that can see the data on the user page.
+# march 2 2024: all scans are implemented.
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)

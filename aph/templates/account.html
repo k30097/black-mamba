@@ -1,59 +1,56 @@
-{% extends "base.html" %} {% block title %}Account{% endblock %} {% block
+{% extends "base.html" %} {% block title %}account{% endblock %} {% block
 content %}
 <style>
-  /* Custom styles for the account page */
   #nmap_scans,
   #ffuf_scans,
   #scraping_scans {
     list-style-type: none;
     padding: 0;
   }
-
   .list-group-item {
-    margin-bottom: 45px; /* Increase the margin-bottom to increase space between lines */
-    text-align: left; /* Align text to the left */
+    margin-bottom: 45px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 8px;
   }
-
   .list-group-item li {
-    margin-bottom: 15px;
+    margin-bottom: 8px;
   }
-
-  .list-group-item strong {
+  .list-group-item strong,
+  .target-info {
     display: inline-block;
     margin-bottom: 8px;
     margin-right: 10px;
   }
-
+  .target-info {
+    margin-top: 20px;
+    display: block;
+  }
   h3 {
     text-align: left;
-    font-size: 24px; /* Adjust the font size as needed */
-    margin-bottom: 20px; /* Add more space below the heading */
-    border-bottom: 2px solid #ddd; /* Optional: add a bottom border for distinction */
-    padding-bottom: 10px; /* Optional: space between text and border */
+    font-size: 24px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
   }
-
-  /* Custom style for indenting script count */
   .script-count-indent {
-    margin-left: 20px; /* Adjust the indentation as needed */
+    margin-left: 20px;
   }
-
-  /* Vertical lines between columns */
   .column {
-    border-right: 1px solid #ccc; /* Add a light border to the right of each column */
+    text-align: left;
+    line-height: 1.5;
   }
-
-  /* Remove border from the last column */
-  .column:last-child {
-    border-right: none;
+  #dirbuster-column {
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
   }
-
-  /* Horizontal line after each scan */
-  .list-group-item {
-    border-bottom: 1px solid #eee; /* Add a light border to the bottom of each scan */
-    padding-bottom: 20px; /* Add some padding to the bottom for spacing */
+  /* Reduced spacing for hostname and open ports */
+  .hostname,
+  .open-ports {
+    margin-bottom: 0px; /* Adjust this value as needed */
   }
 </style>
-
 <div class="container-fluid">
   <h2 style="margin-top: 60px">- Account -</h2>
   <div
@@ -73,49 +70,60 @@ content %}
     >
     <span><strong>scans performed:</strong> {{ total_scans }}</span>
   </div>
-
   <div class="column-container" style="display: flex">
     <div class="column" style="flex: 1">
       <h3>Nmap Scans:</h3>
       <ul class="list-group list-group-flush" id="nmap_scans">
         {% for scan in nmap_scans %}
         <li class="list-group-item">
-          <strong>IP Address:</strong> {{ scan.target }}<br />
+          <strong class="target-info">IP Address:</strong> {{ scan.target }}<br />
+          <strong>date & time:</strong> {{ scan.date_created.strftime('%Y-%m-%d
+          %H:%M:%S') }}<br />
           {% set nmap_results = scan.results | tojson | from_json %}
-          <strong>Command Used:</strong> {{ nmap_results.nmap.command_line }}<br />
-          <strong>Scan Results:</strong>
+          <strong>command used:</strong> {{ nmap_results.nmap.command_line }}<br />
+          <strong>results:</strong>
           {% if nmap_results.scan[scan.target] is defined %}
           <ul>
-            <li>
-              <strong>Hostnames:</strong> {% for hostname in
-              nmap_results.scan[scan.target].hostnames %}{{ hostname.name }}, {%
-              endfor %}
+            <li class="hostname">
+              <strong>hostname:</strong> {% for hostname in
+              nmap_results.scan[scan.target].hostnames %}{{ hostname.name }}{%
+              if not loop.last %}, {% endif %}{% endfor %}
             </li>
-            <li>
-              <strong>Open Ports:</strong> {% for port, data in
-              nmap_results.scan[scan.target].tcp.items() if data.state == 'open'
-              %}{{ port }}, {% endfor %}
+            <li class="open-ports">
+              <strong>open ports:</strong>
+              <ul>
+                {% for port, data in nmap_results.scan[scan.target].tcp.items()
+                if data.state == 'open' %}
+                <li>
+                  {{ port }}: {{ data.name }}{% if data.product %}, {{
+                  data.product }}{% endif %}{% if data.version %}, version: {{
+                  data.version }}{% endif %}
+                </li>
+                {% endfor %}
+              </ul>
             </li>
           </ul>
           {% else %}
-          <p>No scan results available.</p>
+          <p>no scan results available.</p>
           {% endif %}
         </li>
         {% endfor %}
       </ul>
     </div>
-
-    <div class="column" style="flex: 1">
+    <div class="column" id="dirbuster-column" style="flex: 1">
       <h3>Dirbuster Scans:</h3>
       <ul class="list-group list-group-flush" id="dirbuster_scans">
         {% for scan in dirbuster_scans %}
         <li class="list-group-item">
-          <strong>Target URL:</strong> {{ scan.target_url }}<br />
-          <strong>Directories Found:</strong>
+          <strong class="target-info">target URL:</strong> {{ scan.target_url
+          }}<br />
+          <strong>date & time:</strong> {{ scan.date_created.strftime('%Y-%m-%d
+          %H:%M:%S') }}<br />
+          <strong>directories found:</strong>
           {% if scan.results and scan.results['found'] %}
           <ul>
             {% for directory in scan.results['found'] %}
-            <li>{{ directory }}</li>
+            <li>/{{ directory }}</li>
             {% endfor %}
           </ul>
           {% else %}
@@ -125,30 +133,32 @@ content %}
         {% endfor %}
       </ul>
     </div>
-
-    <div class="column" style="flex: 1">
+    <div class="column" id="scraping-column" style="flex: 1">
       <h3>Scrapings:</h3>
       <ul class="list-group list-group-flush" id="scraping_scans">
         {% for scan in scraping_scans %}
         <li class="list-group-item">
-          <strong>Target URL:</strong> {{ scan.target_url }}<br />
+          <strong class="target-info">target URL:</strong> {{ scan.target_url
+          }}<br />
+          <strong>date & time:</strong> {{ scan.date_created.strftime('%Y-%m-%d
+          %H:%M:%S') }}<br />
           {% if scan.results and scan.results is mapping %} {% for tag, count in
           scan.results.items() %}
           <div class="script-count-indent">
-            <strong>{{ tag.capitalize() }} Count:</strong> {{ count }}
+            <strong>{{ tag }} count:</strong> {{ count }}
           </div>
           {% endfor %} {% else %}
-          <p>Results format is not valid.</p>
+          <p>results format is not valid.</p>
           {% endif %}
         </li>
         {% endfor %}
       </ul>
     </div>
-    <div class="button-container">
-      <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
-        >logout</a
-      >
-    </div>
   </div>
-  {% endblock %}
+  <div class="button-container">
+    <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
+      >logout</a
+    >
+  </div>
 </div>
+{% endblock %}

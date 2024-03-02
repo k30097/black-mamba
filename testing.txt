@@ -1,0 +1,28 @@
+khadim971@gmail.com | 1234567
+account2@gmail.com | 12345
+
+for dirbuster:
+    https://www.styleforum.net
+    http://testphp.vulnweb.com/
+    https://securitytrails.com
+    https://thefluffy007.com
+    or:
+        https://portswigger.net/web-security/all-labs
+
+for nmap:
+    45.33.32.156
+    176.28.50.165
+
+for scraping:
+    http://www.itsecgames.com
+    https://www.styleforum.net/threads/18-east.615593/
+    http://testphp.vulnweb.com/
+    https://thefluffy007.com/2012/03/18/damn-vulnerable-web-application-dwva/
+    or:
+        https://portswigger.net/web-security/all-labs
+
+
+error page:
+
+{% extends "base.html" %} {% block title %}THERE WAS AN ERROR - PLEASE TERMINATE
+THE APP AND RESTART{% endblock %} {% block content %} {% endblock %}

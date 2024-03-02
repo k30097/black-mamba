@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import logging
@@ -6,6 +6,7 @@ from os import path
 import os
 import json
 
+# database is initialized.
 db = SQLAlchemy()
 
 def create_app():
@@ -26,7 +27,7 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix='/auth/')
     app.register_blueprint(dashboard_bp, url_prefix='/')
     app.register_blueprint(attacks_bp, url_prefix='/dashboard/')
-    from .models import User, Past_scans_scraping, Past_scans_dirbuster, Past_scans_nmap
+    from .models import User
     # login manager uses sessions to store user info and 
     # manage login. default session length is 30 days.
     login_manager = LoginManager()

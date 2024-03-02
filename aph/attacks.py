@@ -5,7 +5,6 @@ from requests.exceptions import SSLError, MissingSchema
 from bs4 import BeautifulSoup
 import urllib3.exceptions
 from . import db
-import jsonify
 import logging
 import ipaddress
 import requests
@@ -48,13 +47,13 @@ def scraping():
                     flash('Scraping completed and stored successfully.', category='success')
                 else:
                     flash('Failed to retrieve the webpage. Please check the URL.', category='error')
-            except SSLError as ssl_error:
+            except SSLError:
                 # log the SSL error or provide feedback to the user
                 flash('SSL Error: Failed to establish a secure connection. The SSL certificate could not be verified.', category='error')
             except MissingSchema:
                 flash('Invalid URL. Must begin with http:// or https://.', category='error')
-            except Exception as e:
-                flash(f'An error occurred: {e}', category='error')
+            except Exception as e2:
+                flash(f'An error occurred: {e2}', category='error')
     return render_template('scraping.html')
 
 @attacks_bp.route('/dirbuster/', methods=['GET', 'POST'])
