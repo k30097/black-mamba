@@ -32,6 +32,7 @@ def account():
                            total_scans=total_scans,
                            nmap_scans=nmap_scans, dirbuster_scans=dirbuster_scans, 
                            scraping_scans=scraping_scans)
+    
 @dashboard_bp.route('/instructions/')
 def instructions():
     return render_template('instructions.html')
