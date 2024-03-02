@@ -7,12 +7,24 @@ content %}
 </div>
 
 <div class="nmap-form-container">
-  <h3>Enter IP Address for Nmap Scan</h3>
+  <h3>enter details</h3>
   <form action="{{ url_for('attacks.nmap_scan') }}" method="POST">
-    <label for="ip_address">ip address:</label>
-    <input type="text" id="ip_address" name="ip_address" required />
+    <div>
+      <label for="ip_address">IP address:</label>
+      <input type="text" id="ip_address" name="ip_address" required />
+    </div>
+    <div>
+      <label for="max_port">set max port range (optional):</label>
+      <input
+        type="number"
+        id="max_port"
+        name="max_port"
+        min="1"
+        max="65535"
+        placeholder="Default is 65535"
+      />
+    </div>
     <button type="submit">start scan</button>
   </form>
 </div>
-<!-- -->
 {% endblock %}

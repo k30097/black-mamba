@@ -1,7 +1,17 @@
-{% extends "base.html" %} {% block title %}XSS{% endblock %} {% block content %}
+{% extends "base.html" %} {% block title %}Web Scraping Tool{% endblock %} {%
+block content %}
 <div class="button-container">
   <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
     >logout</a
   >
+</div>
+
+<div class="scrape-form-container">
+  <h3>Enter URL for Scraping</h3>
+  <form action="{{ url_for('attacks.scraping') }}" method="POST">
+    <label for="target_url">URL:</label>
+    <input type="text" id="target_url" name="target_url" required />
+    <button type="submit">start scraping</button>
+  </form>
 </div>
 {% endblock %}

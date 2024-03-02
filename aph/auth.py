@@ -9,18 +9,15 @@ auth_bp = Blueprint('auth', __name__, static_folder='static', template_folder='t
 
 @auth_bp.route('/login/', methods=['POST', 'GET'])
 def login():
-    
     # when the content of the forms on the login page is submitted
     # the presence of a user with the same email is checked, then
     # the same is done with the password hash. If all the checks are 
     # successful the user is logged in and redirected to the
     # account page.
-    
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
         user = User.query.filter_by(email=email).first()
-        
         if user:
             if check_password_hash(user.password, password):
                 flash('logged in', category='success')
@@ -35,15 +32,12 @@ def login():
             flash('email is not in the database', category='error')
     return render_template('login.html')
 
-
 @auth_bp.route('/signup/', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
-        
         # check if the user is already signed up with this email.
         # if the email is not found in the database then a new user
         # is created. the password stored is the hashed version.
-        
         email = request.form.get('email')
         password = request.form.get('password')
         password2 = request.form.get('password2')
@@ -58,15 +52,12 @@ def signup():
         elif len(password) < 5:
             flash('password is too short, min. 5 characters', category='error')
         else:
-            
             # new user is created after all the checks for the user info have been performed
             new_user = User(email=email, password=generate_password_hash(password, method='pbkdf2:sha256'))
             db.session.add(new_user)
             db.session.commit()
-            
             # the new user info are committed to the database and the user is then logged in and
             # redirected to the Account page.
-            
             login_user(new_user, remember=True)
             flash('new account created, you are now logged in', category='success')
             return redirect(url_for('dashboard.account'))

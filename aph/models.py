@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
     nmap_scans = db.relationship('Past_scans_nmap', backref='user', lazy=True)
-    ffuf_scans = db.relationship('Past_scans_ffuf', backref='user', lazy=True)
+    dirbuster_scans = db.relationship('Past_scans_dirbuster', backref='user', lazy=True)
     scraping_scans = db.relationship('Past_scans_scraping', backref='user', lazy=True)
     
 class Past_scans_nmap(db.Model):
@@ -24,16 +24,16 @@ class Past_scans_nmap(db.Model):
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     
-class Past_scans_ffuf(db.Model):
-    ffuf_scan_id = db.Column(db.Integer, primary_key=True)
-    target = db.Column(db.String(150))
-    results = db.Column(db.String(50000))
+class Past_scans_dirbuster(db.Model):
+    dirbuster_scan_id = db.Column(db.Integer, primary_key=True)
+    target_url = db.Column(db.String(150))
+    results = db.Column(JSON)
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     
 class Past_scans_scraping(db.Model):
     scraping_scan_id = db.Column(db.Integer, primary_key=True)
-    target = db.Column(db.String(150))
-    results = db.Column(db.String(50000))
+    target_url = db.Column(db.String(150))
+    results = db.Column(JSON)
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

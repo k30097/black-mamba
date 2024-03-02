@@ -1,9 +1,8 @@
 from flask import Flask, Blueprint, render_template, session, redirect, url_for, flash, request
 from flask_login import login_required, current_user
-from .models import Past_scans_ffuf, Past_scans_nmap, Past_scans_scraping, User
+from .models import Past_scans_dirbuster, Past_scans_nmap, Past_scans_scraping, User
 
 # this blueprint page includes all the entries on the navbar at the top of the page
-
 dashboard_bp = Blueprint('dashboard', __name__)
 
 @dashboard_bp.route('/')
@@ -18,19 +17,21 @@ def dashboard():
 @dashboard_bp.route('/account/', methods=['POST' , 'GET'])
 @login_required
 def account():
-    
     # on this page the user can see the results of the past scans completed while logged on this account
     # as of feb 6 2024 nmap scans are the only type included, but others will follow.
-    
     nmap_scans =  Past_scans_nmap.query.filter_by(user_id=current_user.id).all()
-    ffuf_scans = Past_scans_ffuf.query.filter_by(user_id=current_user.id).all()
+    dirbuster_scans = Past_scans_dirbuster.query.filter_by(user_id=current_user.id).all()
     scraping_scans = Past_scans_scraping.query.filter_by(user_id=current_user.id).all()
-        
+    total_scans = len(nmap_scans) + len(dirbuster_scans) + len(scraping_scans)
+    account_creation_date = current_user.date_created.strftime('%Y-%m-%d')  
     print('nmap_scans', nmap_scans)
-    print('ffuf_scans', ffuf_scans)
+    print('dirbuster_scans', dirbuster_scans)
     print('scraping_scans', scraping_scans)
-    return render_template('account.html', current_user=current_user, nmap_scans=nmap_scans, ffuf_scans=ffuf_scans, scraping_scans=scraping_scans)
-    
+    return render_template('account.html', email=current_user.email, 
+                           account_creation_date=account_creation_date,
+                           total_scans=total_scans,
+                           nmap_scans=nmap_scans, dirbuster_scans=dirbuster_scans, 
+                           scraping_scans=scraping_scans)
 @dashboard_bp.route('/instructions/')
 def instructions():
     return render_template('instructions.html')

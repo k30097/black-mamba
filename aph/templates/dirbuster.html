@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% block title %}Dirbuster{% endblock %} {% block
+content %}
+
+<div class="container">
+  <div class="button-container">
+    <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
+      >logout</a
+    >
+  </div>
+
+  <h3>Enter URL for dirbuster</h3>
+  <form action="{{ url_for('attacks.dirbuster') }}" method="POST">
+    <div class="form-group">
+      <label for="target_url">URL:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="target_url"
+        name="target_url"
+        placeholder="Enter URL"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-primary">Start Scan</button>
+  </form>
+</div>
+{% endblock %}

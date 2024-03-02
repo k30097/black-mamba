@@ -15,7 +15,7 @@ content %}
   }
 
   .list-group-item li {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
 
   .list-group-item strong {
@@ -26,70 +26,129 @@ content %}
 
   h3 {
     text-align: left;
+    font-size: 24px; /* Adjust the font size as needed */
+    margin-bottom: 20px; /* Add more space below the heading */
+    border-bottom: 2px solid #ddd; /* Optional: add a bottom border for distinction */
+    padding-bottom: 10px; /* Optional: space between text and border */
+  }
+
+  /* Custom style for indenting script count */
+  .script-count-indent {
+    margin-left: 20px; /* Adjust the indentation as needed */
+  }
+
+  /* Vertical lines between columns */
+  .column {
+    border-right: 1px solid #ccc; /* Add a light border to the right of each column */
+  }
+
+  /* Remove border from the last column */
+  .column:last-child {
+    border-right: none;
+  }
+
+  /* Horizontal line after each scan */
+  .list-group-item {
+    border-bottom: 1px solid #eee; /* Add a light border to the bottom of each scan */
+    padding-bottom: 20px; /* Add some padding to the bottom for spacing */
   }
 </style>
 
 <div class="container-fluid">
   <h2 style="margin-top: 60px">- Account -</h2>
-  <p style="margin-top: 10px">
-    This is your account page. Here you can see your personal information. Your
-    password will always be safely encrypted in a database created locally on
-    your machine.
-  </p>
-
-  <h3>Nmap Scans:</h3>
-  <ul class="list-group list-group-flush" id="nmap_scans">
-    {% for scan in nmap_scans %}
-    <li class="list-group-item">
-      <strong>IP Address:</strong> {{ scan.target }}<br />
-      {% set nmap_results = scan.results | tojson | from_json %}
-      <strong>Command Used:</strong> {{ nmap_results.nmap.command_line }}<br />
-      <strong>Scan Results:</strong>
-      {% if nmap_results.scan[scan.target] is defined %}
-      <ul>
-        <li>
-          <strong>IP Address:</strong> {{
-          nmap_results.scan[scan.target].addresses.ipv4 }}
-        </li>
-        <li>
-          <strong>Command Used:</strong> {{ nmap_results.nmap.command_line }}
-        </li>
-        <li>
-          <strong>Hostnames:</strong> {% for hostname in
-          nmap_results.scan[scan.target].hostnames %}{{ hostname.name }}, {%
-          endfor %}
-        </li>
-        <li>
-          <strong>Open Ports:</strong> {% for port, data in
-          nmap_results.scan[scan.target].tcp.items() if data.state == 'open'
-          %}{{ port }}, {% endfor %}
-        </li>
-      </ul>
-      {% else %}
-      <p>No scan results available.</p>
-      {% endif %}
-    </li>
-    {% endfor %}
-  </ul>
-
-  <h3>FFUF Scans:</h3>
-  <ul class="list-group list-group-flush" id="ffuf_scans">
-    {% for scan in ffuf_scans %}
-    <li class="list-group-item">{{ scan.results }}</li>
-    {% endfor %}
-  </ul>
-
-  <h3>Scraping Scans:</h3>
-  <ul class="list-group list-group-flush" id="scraping_scans">
-    {% for scan in scraping_scans %}
-    <li class="list-group-item">{{ scan.results }}</li>
-    {% endfor %}
-  </ul>
-
-  <div class="button-container">
-    <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
-      >logout</a
+  <div
+    class="user-info"
+    style="
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      font-size: 20px;
+      margin-bottom: 20px;
+    "
+  >
+    <span><strong>email:</strong> {{ current_user.email }}</span>
+    <span
+      ><strong>created on:</strong> {{
+      current_user.date_created.strftime('%Y-%m-%d') }}</span
     >
+    <span><strong>scans performed:</strong> {{ total_scans }}</span>
   </div>
+
+  <div class="column-container" style="display: flex">
+    <div class="column" style="flex: 1">
+      <h3>Nmap Scans:</h3>
+      <ul class="list-group list-group-flush" id="nmap_scans">
+        {% for scan in nmap_scans %}
+        <li class="list-group-item">
+          <strong>IP Address:</strong> {{ scan.target }}<br />
+          {% set nmap_results = scan.results | tojson | from_json %}
+          <strong>Command Used:</strong> {{ nmap_results.nmap.command_line }}<br />
+          <strong>Scan Results:</strong>
+          {% if nmap_results.scan[scan.target] is defined %}
+          <ul>
+            <li>
+              <strong>Hostnames:</strong> {% for hostname in
+              nmap_results.scan[scan.target].hostnames %}{{ hostname.name }}, {%
+              endfor %}
+            </li>
+            <li>
+              <strong>Open Ports:</strong> {% for port, data in
+              nmap_results.scan[scan.target].tcp.items() if data.state == 'open'
+              %}{{ port }}, {% endfor %}
+            </li>
+          </ul>
+          {% else %}
+          <p>No scan results available.</p>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="column" style="flex: 1">
+      <h3>Dirbuster Scans:</h3>
+      <ul class="list-group list-group-flush" id="dirbuster_scans">
+        {% for scan in dirbuster_scans %}
+        <li class="list-group-item">
+          <strong>Target URL:</strong> {{ scan.target_url }}<br />
+          <strong>Directories Found:</strong>
+          {% if scan.results and scan.results['found'] %}
+          <ul>
+            {% for directory in scan.results['found'] %}
+            <li>{{ directory }}</li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>No directories found or results format is not valid.</p>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="column" style="flex: 1">
+      <h3>Scrapings:</h3>
+      <ul class="list-group list-group-flush" id="scraping_scans">
+        {% for scan in scraping_scans %}
+        <li class="list-group-item">
+          <strong>Target URL:</strong> {{ scan.target_url }}<br />
+          {% if scan.results and scan.results is mapping %} {% for tag, count in
+          scan.results.items() %}
+          <div class="script-count-indent">
+            <strong>{{ tag.capitalize() }} Count:</strong> {{ count }}
+          </div>
+          {% endfor %} {% else %}
+          <p>Results format is not valid.</p>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="button-container">
+      <a href="{{ url_for('auth.logout') }}" class="auth-button" method="GET"
+        >logout</a
+      >
+    </div>
+  </div>
+  {% endblock %}
 </div>
-{% endblock %}
