@@ -98,33 +98,25 @@ def nmap_scan():
     nmap_scan_results = session.get('nmap_scan_results', {})
     if request.method == 'POST':
         target_ip = request.form.get('ip_address')
-        max_port = request.form.get('max_port', None)
+        max_port = request.form.get('max_port', '').strip()
+        # Check if max_port is a digit; if not, or if it's empty, set a default value
+        if not max_port.isdigit():
+            # Default max port if none specified
+            max_port = 10000  
+        else:
+            # Convert valid max_port input to integer
+            max_port = int(max_port)  
         if target_ip:
             try:
-                ip_address_obj = ipaddress.ip_address(target_ip)
-                # ^ this validates the input and raises an exception
-                # validate max_port
-                if max_port is not None:
-                    try:
-                        max_port = int(max_port)
-                        if not 1 <= max_port <= 65535:
-                            raise ValueError("Port must be between 1 and 65535")
-                    except ValueError as e:
-                        flash(str(e), 'error')
-                        return render_template('nmap.html')
-                else:
-                    # default if not provided
-                    max_port = 10000
+                # Validates the input IP address
+                ipaddress.ip_address(target_ip)
                 result = scanner.scan(target_ip, f'1-{max_port}')
-                # Store the JSON results as a dictionary in the session
                 nmap_scan_results = result
                 session['nmap_scan_results'] = nmap_scan_results
                 results_dict = json.loads(json.dumps(result))
                 new_scan = Past_scans_nmap(target=target_ip, results=results_dict, user=current_user)
                 db.session.add(new_scan)
                 db.session.commit()
-                # nmap scan is performed on the target ip, within the selected port range.
-                # the results come in JSON format and saved in the database as a dictionary
                 flash('Scan completed and stored successfully', category='success')
                 logging.info(f'New Nmap scan added for user id {current_user.id}')
                 logging.info(f'Scan results: {json.dumps(result)}')

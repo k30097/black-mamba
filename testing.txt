@@ -6,6 +6,7 @@ for dirbuster:
     http://testphp.vulnweb.com/
     https://securitytrails.com
     https://thefluffy007.com
+    https://www.hackthissite.org
     or:
         https://portswigger.net/web-security/all-labs
 
@@ -18,6 +19,7 @@ for scraping:
     https://www.styleforum.net/threads/18-east.615593/
     http://testphp.vulnweb.com/
     https://thefluffy007.com/2012/03/18/damn-vulnerable-web-application-dwva/
+    https://www.hackthissite.org/
     or:
         https://portswigger.net/web-security/all-labs
 
