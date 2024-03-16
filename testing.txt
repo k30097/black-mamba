@@ -22,9 +22,3 @@ for scraping:
     https://www.hackthissite.org/
     or:
         https://portswigger.net/web-security/all-labs
-
-
-error page:
-
-{% extends "base.html" %} {% block title %}THERE WAS AN ERROR - PLEASE TERMINATE
-THE APP AND RESTART{% endblock %} {% block content %} {% endblock %}
